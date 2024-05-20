@@ -5,65 +5,101 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         // Creating system components
         RentalSystem system = new RentalSystem();
-        Authentication auth = new Authentication();
-        Payment payment = new Payment();
-
-        // Creating users
-        Lender lender = new Lender();
-        lender.setId("1");
-        lender.setName("Alice");
-        lender.setLastName("Smith");
-
-        Borrower borrower = new Borrower();
-        borrower.setId("2");
-        borrower.setName("Bob");
-        borrower.setLastName("Johnson");
-
-        // Registering users in the system
-        system.registerUser(lender);
-        system.registerUser(borrower);
-
-        // Adding a vehicle
-        Car car = new Car();
-        car.model = "Toyota Corolla";
-        car.brand = "Toyota";
-        car.year = 2022;
-        car.plate = "XYZ1234";
-
-        lender.addVehicleToSystem(car);
-        system.addVehicle(car);
-
+        Authentication auth = new Authentication(); // TODO: make Authentication singleton
+        User loggedUser = null;
+        // Creating some users
+        system.getUsersFromCSV("users.csv");
+        system.getVehiclesFromCSV("vehicles.csv");
+        while (true) {
+            System.out.println("Login or if you dont have account register and login");
+            System.out.println("1. Register");
+            System.out.println("2. Login");
+            int option = scanner.nextInt();
+            if (option == 1) {
+                System.out.println("Enter username:");
+                String username = scanner.next();
+                System.out.println("Enter password:");
+                String password = scanner.next();
+                System.out.println("Enter name:");
+                String name = scanner.next();
+                System.out.println("Enter last name:");
+                String lastName = scanner.next();
+                Borrower borrower = new Borrower(name, lastName, username, Authentication.hashPassword(password));
+                system.registerUser(borrower);
+            } 
+            else if (option == 2) {
+            System.out.println("Enter username:");
+            String username = scanner.next();
+            System.out.println("Enter password:");
+            String password = scanner.next();
+            loggedUser = auth.login(username, password, system.users);
+            if (loggedUser != null) {
+                System.out.println("Login successful");
+                break;
+            } else {
+                System.out.println("Login failed");
+            }
+        }
         boolean exit = false;
         while (!exit) {
             System.out.println("Welcome to the Vehicle Lending System");
-            System.out.println("1. Login");
-            System.out.println("2. Rent Vehicle");
-            System.out.println("3. Return Vehicle");
-            System.out.println("4. Exit");
+            System.out.println("1. Rent Vehicle");
+            System.out.println("2. Return Vehicle");
+            if (loggedUser instanceof Lender) {
+                System.out.println("3. Add Vehicle");
+            }
+            if (loggedUser instanceof Borrower) {
+                System.out.println("4. Add Comment");
+            }
+
+            System.out.println("5. Exit");
             System.out.print("Choose an option: ");
 
-            int option = scanner.nextInt();
+            option = scanner.nextInt();
             switch (option) {
                 case 1:
-                    // Simple login simulation
-                    System.out.println("Enter username:");
-                    String username = scanner.next();
-                    System.out.println("Enter password:");
-                    String password = scanner.next();
-                    auth.login(username, password);
+                    int i = 0;
+                    for (Vehicle vehicle : system.availableVehicles) {
+                        System.out.println(i++ +" "+vehicle.getModel());
+                    }
+                    System.out.println("Choose a vehicle to rent:");
+                    int car_id = scanner.nextInt();
+                    system.rentVehicle(car_id,loggedUser);
                     break;
                 case 2:
-                    // Simulate renting a vehicle
-                    borrower.rentVehicle(car);
+                    if (loggedUser instanceof Borrower) {
+                        system.returnVehicle(((Borrower) loggedUser).rentedVehicle,loggedUser);
+                    } else {
+                        System.out.println("You are not a borrower");
+                    }
                     break;
                 case 3:
-                    // Simulate returning a vehicle
-                    borrower.returnVehicle(car);
+                    if (loggedUser instanceof Lender) {
+                        System.out.println("Enter vehicle type: m for motorcycle, c for car");
+                        String type = scanner.next();
+                        System.out.println("Enter vehicle model:");
+                        String model = scanner.next();
+                        System.out.println("Enter vehicle year:");
+                        int year = scanner.nextInt();
+                        if (type.equals("m")) {
+                            Motorcycle vehicle = new Motorcycle(model, year);
+                            system.addVehicle(vehicle);
+                        } else if (type.equals("c")) {
+                            Car vehicle = new Car(model, year);
+                            system.addVehicle(vehicle);
+                        } else {
+                            System.out.println("Invalid vehicle type");
+                        }
+                    } else {
+                        System.out.println("You are not a lender");
+                    }
                     break;
                 case 4:
+                    //system.addComment("This is a comment"); //TODO: Think of idea where to store comment and how to implement this
+                    break;
+                case 5:
                     exit = true;
                     System.out.println("Exiting the system.");
                     break;
@@ -72,7 +108,6 @@ public class App {
                     break;
             }
         }
-
         scanner.close();
     }
-}
+}}

@@ -4,12 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lender implements User {
-    private String id;
+    private int id;
     private String name;
     private String lastName;
-    private List<Vehicle> ownedCars = new ArrayList<>();
-
-    public String getId() {
+    public String username;
+    public String password;
+    public int moneyBalance = 0;
+    public Enum<ROLES> role = ROLES.USER;
+    public List<Vehicle> ownedCars = new ArrayList<>();
+    public Lender(String name, String lastName, String username, String password) {
+        this.id = 0; //TODO: Implement ID generation
+        this.name = name;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public int getId() {
         return id;
     }
 
@@ -21,7 +37,7 @@ public class Lender implements User {
         return lastName;
     }
     
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -39,5 +55,8 @@ public class Lender implements User {
     public void addVehicleToSystem(Vehicle vehicle) {
         ownedCars.add(vehicle);
         System.out.println("Vehicle added to system: " + vehicle.getModel());
+    }
+    public String toCSV() {
+        return id + "," + name + "," + lastName + "," + username + "," + password + "," + role + "," + moneyBalance;
     }
 }
