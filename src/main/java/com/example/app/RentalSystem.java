@@ -14,7 +14,7 @@ public class RentalSystem {
 
     public void registerUser(User user) {
         users.add(user);
-        System.out.println("User registered: " + user.getName());
+        System.out.println(user.getUsername() + " registered successfully as " + user.role + " with ID: " + user.getId());
     }
 
     public void transferMoneyToLender(User lender, double amount) {

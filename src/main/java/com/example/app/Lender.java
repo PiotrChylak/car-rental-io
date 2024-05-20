@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lender implements User {
-    private int id;
+    private String id;
     private String name;
     private String lastName;
     public String username;
@@ -13,7 +13,7 @@ public class Lender implements User {
     public Enum<ROLES> role = ROLES.USER;
     public List<Vehicle> ownedCars = new ArrayList<>();
     public Lender(String name, String lastName, String username, String password) {
-        this.id = 0; //TODO: Implement ID generation
+        this.id = IDGenerator.generateID("L");
         this.name = name;
         this.lastName = lastName;
         this.username = username;
@@ -25,7 +25,7 @@ public class Lender implements User {
     public String getPassword() {
         return password;
     }
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -37,7 +37,7 @@ public class Lender implements User {
         return lastName;
     }
     
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

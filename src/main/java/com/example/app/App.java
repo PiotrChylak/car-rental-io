@@ -5,19 +5,27 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        // Creating system components
+        //Creating system components
         RentalSystem system = new RentalSystem();
         Authentication auth = new Authentication(); // TODO: make Authentication singleton
         User loggedUser = null;
-        // Creating some users
-        system.getUsersFromCSV("users.csv");
-        system.getVehiclesFromCSV("vehicles.csv");
+        //Creating some users
+        //system.getUsersFromCSV("users.csv");
+        //system.getVehiclesFromCSV("vehicles.csv");
         while (true) {
             System.out.println("Login or if you dont have account register and login");
             System.out.println("1. Register");
             System.out.println("2. Login");
             int option = scanner.nextInt();
             if (option == 1) {
+                System.out.println("Choose your role:\n1. Lender\n2. Borrower");
+                int roleOption = scanner.nextInt();
+                if(roleOption == 1) {
+                    System.out.println("Now you are registering as Lender.\n");
+                } else if(roleOption == 2) {
+                    System.out.println("Now you are registering as Borrower.\n");
+                }
+
                 System.out.println("Enter username:");
                 String username = scanner.next();
                 System.out.println("Enter password:");
@@ -26,8 +34,16 @@ public class App {
                 String name = scanner.next();
                 System.out.println("Enter last name:");
                 String lastName = scanner.next();
-                Borrower borrower = new Borrower(name, lastName, username, Authentication.hashPassword(password));
-                system.registerUser(borrower);
+
+                User newUser;
+                if (roleOption == 1) {
+                    newUser = new Lender(name, lastName, username, Authentication.hashPassword(password));
+                    system.registerUser(newUser);
+                }
+                else if (roleOption == 2) {
+                    newUser = new Borrower(name, lastName, username, Authentication.hashPassword(password));
+                    system.registerUser(newUser);
+                }
             } 
             else if (option == 2) {
             System.out.println("Enter username:");
