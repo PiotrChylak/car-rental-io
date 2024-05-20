@@ -52,13 +52,6 @@ public class Borrower implements User {
         System.out.println("Comment added by Borrower: " + comment);
     }
 
-    public void rentVehicle(Vehicle vehicle) {
-        System.out.println("Vehicle rented: " + vehicle.getModel());
-    }
-
-    public void returnVehicle(Vehicle vehicle) {
-        System.out.println("Vehicle returned: " + vehicle.getModel());
-    }
     //TODO add rented vehicle to user
     public String toCSV(){
         return this.id + "," + this.name + "," + this.lastName + "," + this.username + "," + this.password + "," + this.moneyBalance + "," + this.role;
