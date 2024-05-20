@@ -9,9 +9,9 @@ public class App {
         RentalSystem system = new RentalSystem();
         Authentication auth = new Authentication(); // TODO: make Authentication singleton
         User loggedUser = null;
-        //Creating some users
-        //system.getUsersFromCSV("users.csv");
-        //system.getVehiclesFromCSV("vehicles.csv");
+        //Creating some users'
+        //system.getUsersFromCSV("users.csv")
+        //system.getVehiclesFromCSV("vehicles.csv")
         while (true) {
             System.out.println("Login or if you dont have account register and login");
             System.out.println("1. Register");
