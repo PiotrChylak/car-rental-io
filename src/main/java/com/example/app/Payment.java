@@ -1,7 +1,12 @@
 package com.example.app;
 
 public class Payment {
-    public void processPayment(double amount) {
-        System.out.println("Payment processed: $" + amount);
+    public static boolean processPayment(User from, User to, float amount) {
+        if (from.getBalance()<amount){
+            return false;
+        }
+        from.setBalance(from.getBalance()-amount);
+        to.setBalance(to.getBalance()+amount);
+        return true;
     }
 }
