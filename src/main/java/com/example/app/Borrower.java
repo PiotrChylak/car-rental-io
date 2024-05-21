@@ -6,7 +6,7 @@ public class Borrower implements User {
     private String name;
     private String lastName;
     public String password;
-    public int moneyBalance = 0;
+    public float moneyBalance;
     public Enum<ROLES> role = ROLES.USER;
     public Vehicle rentedVehicle = null;
 
@@ -46,6 +46,14 @@ public class Borrower implements User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public float getBalance() {
+        return moneyBalance;
+    }
+    public void setBalance(float balance){
+        moneyBalance = balance;
     }
 
     public void addComment(String comment) {

@@ -7,6 +7,8 @@ public interface User {
     String getPassword();
     String getLastName();
     String toCSV();
+    float getBalance();
+    void setBalance(float amount);
     Enum<ROLES> role = ROLES.USER;
     void addComment(String comment);
 }

@@ -6,6 +6,9 @@ public abstract class Vehicle {
     protected int year;
     protected boolean isRented;
     protected String plate;
+    public String ownerId;
+    public String renterId;
+    public float dailyFee;
 
     public String getModel() {
         return model;

@@ -10,8 +10,6 @@ public class App {
         Authentication auth = new Authentication(); // TODO: make Authentication singleton
         User loggedUser = null;
         TextHandler textH = new TextHandler(scanner, system, auth);
-        Car car1 = new Car("Toyota", 2020,"LUB123","Corolla");
-        system.addVehicle(car1);
         //Creating some users'
         system.getUsersFromCSV("src/resources/user.csv");
         //system.getVehiclesFromCSV("vehicles.csv")
@@ -55,7 +53,9 @@ public class App {
                     }
                     System.out.println("Choose a vehicle to rent:");
                     String plate = scanner.next();
-                    system.rentVehicle(plate,(Borrower) loggedUser);
+                    System.out.println("For how long would u like to borrow this vehicle: ");
+                    int duration = scanner.nextInt();
+                    system.rentVehicle(plate,(Borrower) loggedUser,duration);
                     break;
                 case 2:
                     if (loggedUser instanceof Borrower) {
@@ -74,6 +74,8 @@ public class App {
                         int year = scanner.nextInt();
                         System.out.println("Enter vehicle plate:");
                         plate = scanner.next();
+                        System.out.println("Enter daily fee:");
+                        int dailyfee = scanner.nextInt();
                         if (system.availableVehicles.stream().anyMatch(v -> v.plate.equals(plate))) {
                             System.out.println("Vehicle with plate " + plate + " already exists");
                             break;
@@ -83,10 +85,10 @@ public class App {
                         if (type.equals("m")) {
                             System.out.println("Enter motorcycle category:");
                             String category = scanner.next();
-                            Motorcycle vehicle = new Motorcycle(model, year, plate, brand,category);
+                            Motorcycle vehicle = new Motorcycle(model, year, plate, brand,category,dailyfee, loggedUser.getId());
                             system.addVehicle(vehicle);
                         } else if (type.equals("c")) {
-                            Car vehicle = new Car(model, year, plate, brand);
+                            Car vehicle = new Car(model, year, plate, brand,dailyfee, loggedUser.getId());
                             system.addVehicle(vehicle);
                         } else {
                             System.out.println("Invalid vehicle type");

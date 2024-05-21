@@ -9,7 +9,7 @@ public class Lender implements User {
     private String lastName;
     public String username;
     public String password;
-    public int moneyBalance = 0;
+    public float moneyBalance = 0;
     public Enum<ROLES> role = ROLES.USER;
     public List<Vehicle> ownedCars = new ArrayList<>();
     public Lender(String name, String lastName, String username, String password) {
@@ -28,7 +28,12 @@ public class Lender implements User {
     public String getId() {
         return id;
     }
-
+    public float getBalance(){
+        return moneyBalance;
+    }
+    public void setBalance(float amount){
+        moneyBalance = amount;
+    }
     public String getName() {
         return name;
     }
@@ -58,5 +63,9 @@ public class Lender implements User {
     }
     public String toCSV() {
         return id + "," + name + "," + lastName + "," + username + "," + password + "," + role + "," + moneyBalance;
+    }
+
+    public boolean confirmRentRequest(Borrower loggedUser, Vehicle vehicle) {
+        return true;
     }
 }

@@ -22,23 +22,35 @@ public class RentalSystem {
         System.out.println("Transferred $" + amount + " to Lender: " + lender.getName());
     }
 
-    public void rentVehicle(String plate, Borrower loggedUser) {
+    public Vehicle vehicleAvability(String plate) {
+        Vehicle vehicle = availableVehicles.stream().filter(v -> v.plate.equals(plate)).findFirst().orElse(null);
+        if (vehicle == null) {
+            System.out.println("Vehicle not found with plate: " + plate);
+            return null;
+        }
+        if (vehicle.isRented) {
+            System.out.println("Vehicle is already rented: " + vehicle.getModel());
+            return null;
+        }
+        return vehicle;
+    }
+public void rentVehicle(String plate, Borrower loggedUser,int duration) {
         if (loggedUser.rentedVehicle != null) {
             System.out.println("You have already rented a vehicle: " + loggedUser.rentedVehicle.getModel());
             return;
         }
-        Vehicle vehicle = availableVehicles.stream().filter(v -> v.plate == plate).findFirst().orElse(null);
-        if (vehicle == null) {
-            System.out.println("Vehicle not found with plate: " + plate);
-            return;
+        Vehicle vehicle = vehicleAvability(plate);
+        Lender lender = (Lender) users.stream().filter(v->(v.getId().equals(vehicle.ownerId))).findFirst().orElse(null);
+        if(lender.confirmRentRequest(loggedUser,vehicle)){
+            vehicle.rent();
+            loggedUser.rentedVehicle = vehicle;
+            System.out.println("Vehicle rented successfully: " + vehicle.getModel());
+            if (Payment.processPayment(loggedUser,lender,vehicle.dailyFee*duration)){
+
+            }
+        }else {
+            System.out.println("Your request was denied by the owner of the car");
         }
-        if (vehicle.isRented) {
-            System.out.println("Vehicle is already rented: " + vehicle.getModel());
-            return;
-        }
-        vehicle.rent();
-        loggedUser.rentedVehicle = vehicle;
-        System.out.println("Vehicle rented successfully: " + vehicle.getModel());
     }
     public void returnVehicle(Borrower loggedUser) {
         if (loggedUser.rentedVehicle == null) {
