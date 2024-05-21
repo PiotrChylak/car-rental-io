@@ -5,37 +5,22 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        // Creating system components
+        //Creating system components
         RentalSystem system = new RentalSystem();
         Authentication auth = new Authentication(); // TODO: make Authentication singleton
         User loggedUser = null;
-        // Creating some users
-        system.getUsersFromCSV("users.csv");
-        system.getVehiclesFromCSV("vehicles.csv");
+        TextHandler textH = new TextHandler(scanner, system, auth);
+        //Creating some users'
+        //system.getUsersFromCSV("users.csv")
+        //system.getVehiclesFromCSV("vehicles.csv")
         while (true) {
-            System.out.println("Login or if you dont have account register and login");
-            System.out.println("1. Register");
-            System.out.println("2. Login");
+            textH.displayMainMenu();
             int option = scanner.nextInt();
             if (option == 1) {
-                System.out.println("Enter username:");
-                String username = scanner.next();
-                System.out.println("Enter password:");
-                String password = scanner.next();
-                System.out.println("Enter name:");
-                String name = scanner.next();
-                System.out.println("Enter last name:");
-                String lastName = scanner.next();
-                Borrower borrower = new Borrower(name, lastName, username, Authentication.hashPassword(password));
-                system.registerUser(borrower);
+                textH.registration();
             } 
             else if (option == 2) {
-            System.out.println("Enter username:");
-            String username = scanner.next();
-            System.out.println("Enter password:");
-            String password = scanner.next();
-            loggedUser = auth.login(username, password, system.users);
-            if (loggedUser != null) {
+            if (textH.login()) {
                 System.out.println("Login successful");
                 break;
             } else {

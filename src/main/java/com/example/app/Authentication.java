@@ -14,7 +14,6 @@ public class Authentication {
         if (user.isPresent()) {
             return user.get();
         } else {
-            System.out.println("Login failed");
             return null;
         }
     }

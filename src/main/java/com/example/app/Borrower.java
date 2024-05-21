@@ -1,7 +1,7 @@
 package com.example.app;
 
 public class Borrower implements User {
-    private int id;
+    private String id;
     public String username;
     private String name;
     private String lastName;
@@ -11,7 +11,7 @@ public class Borrower implements User {
     public Vehicle rentedVehicle = null;
 
     public Borrower(String name, String lastName, String username, String password) {
-        this.id = 0; // TODO: Implement ID generation
+        this.id = IDGenerator.generateID("B");
         this.name = name;
         this.lastName = lastName;
         this.username = username;
@@ -24,7 +24,7 @@ public class Borrower implements User {
     public String getPassword() {
         return password;
     }
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -36,7 +36,7 @@ public class Borrower implements User {
         return lastName;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -52,13 +52,6 @@ public class Borrower implements User {
         System.out.println("Comment added by Borrower: " + comment);
     }
 
-    public void rentVehicle(Vehicle vehicle) {
-        System.out.println("Vehicle rented: " + vehicle.getModel());
-    }
-
-    public void returnVehicle(Vehicle vehicle) {
-        System.out.println("Vehicle returned: " + vehicle.getModel());
-    }
     //TODO add rented vehicle to user
     public String toCSV(){
         return this.id + "," + this.name + "," + this.lastName + "," + this.username + "," + this.password + "," + this.moneyBalance + "," + this.role;
