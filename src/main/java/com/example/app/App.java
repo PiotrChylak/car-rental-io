@@ -10,17 +10,17 @@ public class App {
         Authentication auth = new Authentication(); // TODO: make Authentication singleton
         User loggedUser = null;
         TextHandler textH = new TextHandler(scanner, system, auth);
+        UserCSVHandler userCSV = new UserCSVHandler();
+
+
         Car car1 = new Car("Toyota", 2020,"LUB123","Corolla");
         system.addVehicle(car1);
-        //Creating some users'
-        system.getUsersFromCSV("src/resources/user.csv");
         //system.getVehiclesFromCSV("vehicles.csv")
         while (true) {
             textH.displayMainMenu();
             int option = scanner.nextInt();
             if (option == 1) {
                 textH.registration();
-                system.saveUsersToCSV("src/resources/user.csv");
             }
             else if (option == 2) {
             loggedUser = textH.login();

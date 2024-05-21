@@ -57,6 +57,6 @@ public class Lender implements User {
         System.out.println("Vehicle added to system: " + vehicle.getModel());
     }
     public String toCSV() {
-        return id + "," + name + "," + lastName + "," + username + "," + password + "," + role + "," + moneyBalance;
+        return id + "," + name + "," + lastName + "," + username + "," + password + "," + moneyBalance + "," + role;
     }
 }
