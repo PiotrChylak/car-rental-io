@@ -50,6 +50,10 @@ public class TextHandler {
         }
     }
 
+    public void LenderMenu(){};
+
+    public void BorrowerMenu(){};
+
     public User login(){
         System.out.println("Enter username:");
         String username = scanner.next();
