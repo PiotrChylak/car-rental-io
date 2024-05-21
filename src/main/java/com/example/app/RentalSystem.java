@@ -22,14 +22,32 @@ public class RentalSystem {
         System.out.println("Transferred $" + amount + " to Lender: " + lender.getName());
     }
 
-    public void rentVehicle(int car_id, User loggedUser) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'rentVehicle'");
+    public void rentVehicle(String plate, Borrower loggedUser) {
+        if (loggedUser.rentedVehicle != null) {
+            System.out.println("You have already rented a vehicle: " + loggedUser.rentedVehicle.getModel());
+            return;
+        }
+        Vehicle vehicle = availableVehicles.stream().filter(v -> v.plate == plate).findFirst().orElse(null);
+        if (vehicle == null) {
+            System.out.println("Vehicle not found with plate: " + plate);
+            return;
+        }
+        if (vehicle.isRented) {
+            System.out.println("Vehicle is already rented: " + vehicle.getModel());
+            return;
+        }
+        vehicle.rent();
+        loggedUser.rentedVehicle = vehicle;
+        System.out.println("Vehicle rented successfully: " + vehicle.getModel());
     }
-
-    public void returnVehicle(Vehicle rentedVehicle, User loggedUser) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'returnVehicle'");
+    public void returnVehicle(Borrower loggedUser) {
+        if (loggedUser.rentedVehicle == null) {
+            System.out.println("You have not rented any vehicle");
+            return;
+        }
+        loggedUser.rentedVehicle.isRented = false;
+        loggedUser.rentedVehicle = null;
+        System.out.println("Vehicle returned successfully");
     }
 
     public void saveUsersToCSV(String path) {

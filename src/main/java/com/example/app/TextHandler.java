@@ -50,15 +50,15 @@ public class TextHandler {
         }
     }
 
-    public boolean login(){
+    public User login(){
         System.out.println("Enter username:");
         String username = scanner.next();
         System.out.println("Enter password:");
         String password = scanner.next();
         loggedUser = auth.login(username, password, system.users);
         if (loggedUser != null) {
-            return true;
+            return loggedUser;
         }
-            return false;
+            return null;
     }
 }

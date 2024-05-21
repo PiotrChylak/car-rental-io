@@ -1,7 +1,7 @@
 package com.example.app;
 
 public interface User {
-    int getId();
+    String getId();
     String getName();
     String getUsername();
     String getPassword();
