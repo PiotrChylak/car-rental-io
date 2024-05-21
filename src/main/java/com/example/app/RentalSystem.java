@@ -53,7 +53,11 @@ public class RentalSystem {
     public void saveUsersToCSV(String path) {
         try (FileWriter writer = new FileWriter(path)) {
             for (User user : users) {
-                writer.write(user.toCSV() + "\n");
+                if (user instanceof Borrower) {
+                    writer.write("B" + "," + user.toCSV() + "\n");
+                }else if (user instanceof Lender) {
+                    writer.write("L" + "," + user.toCSV() + "\n");
+                }
             }
             System.out.println("Users have been saved to CSV file: " + path);
         } catch (IOException e) {
@@ -65,17 +69,21 @@ public class RentalSystem {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
-                if (fields.length >= 7) {
-                    String id = fields[0];
-                    String name = fields[1];
-                    String lastName = fields[2];
-                    String username = fields[3];
-                    String password = fields[4];
-                    int moneyBalance = Integer.parseInt(fields[5]);
-                    Enum<ROLES> role = ROLES.valueOf(fields[6]);
-
-                    // TODO adding users from CSV file
-                }
+                if (fields.length >= 8) {
+                    String id = fields[1];
+                    String name = fields[2];
+                    String lastName = fields[3];
+                    String username = fields[4];
+                    String password = fields[5];
+                if (fields[0].equals("B")) {
+                    User user = new Borrower(name, lastName, username, password);
+                    ((Borrower)user).setId(id);
+                    users.add(user);
+                } else if (fields[0].equals("L")) {
+                    User user = new Lender(name, lastName, username, password);
+                    ((Lender)user).setId(id);
+                    users.add(user);
+                }}
             }
             System.out.println("Users have been loaded from CSV file: " + path);
         } catch (IOException e) {
