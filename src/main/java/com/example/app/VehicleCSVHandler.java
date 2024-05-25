@@ -10,7 +10,7 @@ import java.util.List;
 public class VehicleCSVHandler {
     public void saveVehiclesToCsv(Vehicle[] vehicles) {
         try {
-            FileWriter writer = new FileWriter("vehicles.csv");
+            FileWriter writer = new FileWriter("src/resources/vehicles.csv");
             for (Vehicle vehicle : vehicles) {
                 writer.write(vehicle.toCSV());
             }
@@ -22,7 +22,7 @@ public class VehicleCSVHandler {
 
     public void saveVehicleToCsv(Vehicle vehicle) {
         try {
-            FileWriter writer = new FileWriter("vehicles.csv", true);
+            FileWriter writer = new FileWriter("src/resources/vehicles.csv");
             writer.write(vehicle.toCSV());
             writer.close();
         } catch (IOException e) {
@@ -37,26 +37,26 @@ public class VehicleCSVHandler {
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
                 if (fields.length >= 8) {
-                    String id = fields[0];
-                    String model = fields[1];
-                    String brand = fields[2];
-                    int year = Integer.parseInt(fields[3]);
-                    boolean isRented = Boolean.parseBoolean(fields[4]);
-                    String plate = fields[5];
-                    String ownerId = fields[6];
-                    String renterId = fields[7];
-                    float dailyFee = Float.parseFloat(fields[8]);
-                    if(ownerId.startsWith("C")){
+                    String model = fields[0];
+                    String brand = fields[1];
+                    int year = Integer.parseInt(fields[2]);
+                    boolean isRented = Boolean.parseBoolean(fields[3]);
+                    String plate = fields[4];
+                    String ownerId = fields[5];
+                    String renterId = fields[6];
+                    float dailyFee = Float.parseFloat(fields[7]);
+                    String id = fields[8];
+                    if(id.startsWith("C")){
                         Car car = new Car(model, year, plate, brand, dailyFee, ownerId, id);
                         car.renterId = renterId;
                         car.isRented = isRented;
                         vehicles.add(car);
-                    } else if(ownerId.startsWith("M")){
-                        String category = fields[9];
-                        Motorcycle bike = new Motorcycle(model, year, plate, brand, category,dailyFee, ownerId, id);
-                        bike.renterId = renterId;
-                        bike.isRented = isRented;
-                        vehicles.add(bike);
+                    } else if(id.startsWith("M")){
+                        // TODO add category handling for motorcycles
+                        Motorcycle motorcycle = new Motorcycle(model, year, plate, brand,dailyFee, ownerId, id);
+                        motorcycle.renterId = renterId;
+                        motorcycle.isRented = isRented;
+                        vehicles.add(motorcycle);
                     }
                 }
             }

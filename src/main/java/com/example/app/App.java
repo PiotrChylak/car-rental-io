@@ -10,9 +10,10 @@ public class App {
         Authentication auth = new Authentication(); // TODO: make Authentication singleton
         User loggedUser = null;
         TextHandler textH = new TextHandler(scanner, system, auth);
-        //system.getVehiclesFromCSV("vehicles.csv")
+        VehicleCSVHandler csvHandler = new VehicleCSVHandler();
+        system.availableVehicles = VehicleCSVHandler.getVehiclesFromCSV("src/resources/vehicles.csv");
         while (true) {
-            textH.displayMainMenu();
+            //textH.displayMainMenu();
             int option = scanner.nextInt();
             if (option == 1) {
                 textH.registration();
@@ -81,11 +82,12 @@ public class App {
                         String brand = scanner.next();
                         if (type.equals("m")) {
                             System.out.println("Enter motorcycle category:");
-                            String category = scanner.next();
-                            Motorcycle vehicle = new Motorcycle(model, year, plate, brand,category,dailyfee, loggedUser.getId(), null);
+                            Motorcycle vehicle = new Motorcycle(model, year, plate, brand,dailyfee, loggedUser.getId(), null);
+                            csvHandler.saveVehicleToCsv(vehicle);
                             system.addVehicle(vehicle);
                         } else if (type.equals("c")) {
                             Car vehicle = new Car(model, year, plate, brand,dailyfee, loggedUser.getId(), null);
+                            csvHandler.saveVehicleToCsv(vehicle);
                             system.addVehicle(vehicle);
                         } else {
                             System.out.println("Invalid vehicle type");

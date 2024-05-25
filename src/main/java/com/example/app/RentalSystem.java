@@ -39,7 +39,7 @@ public class RentalSystem {
         }
         return vehicle;
     }
-public void rentVehicle(String plate, Borrower loggedUser,int duration) {
+    public void rentVehicle(String plate, Borrower loggedUser,int duration) {
         if (loggedUser.rentedVehicle != null) {
             System.out.println("You have already rented a vehicle: " + loggedUser.rentedVehicle.getModel());
             return;
@@ -66,15 +66,5 @@ public void rentVehicle(String plate, Borrower loggedUser,int duration) {
         loggedUser.rentedVehicle.isRented = false;
         loggedUser.rentedVehicle = null;
         System.out.println("Vehicle returned successfully");
-    }
-
-    public void getVehiclesFromCSV(String path) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getVehiclesFromCSV'");
-    }
-
-    public void saveVehiclesToCSV(String path) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'saveVehiclesToCSV'");
     }
 }
