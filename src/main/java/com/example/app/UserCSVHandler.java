@@ -40,11 +40,11 @@ public class UserCSVHandler {
                     String username = fields[3];
                     String password = fields[4];
                     if (id.startsWith("B")) {
-                        User user = new Borrower(name, lastName, username, password);
+                        User user = new Borrower(name, lastName, username, password, id);
                         ((Borrower) user).setId(id);
                         users.add(user);
                     } else if (id.startsWith("L")) {
-                        User user = new Lender(name, lastName, username, password);
+                        User user = new Lender(name, lastName, username, password, id);
                         ((Lender) user).setId(id);
                         users.add(user);
                     }

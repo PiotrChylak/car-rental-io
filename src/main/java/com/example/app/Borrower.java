@@ -10,8 +10,11 @@ public class Borrower implements User {
     public Enum<ROLES> role = ROLES.USER;
     public Vehicle rentedVehicle = null;
 
-    public Borrower(String name, String lastName, String username, String password) {
-        this.id = IDGenerator.generateID("B");
+    public Borrower(String name, String lastName, String username, String password, String id) {
+        if(id == null)
+            this.id = IDGenerator.generateUserID("B");
+        else
+            this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.username = username;

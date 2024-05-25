@@ -82,10 +82,10 @@ public class App {
                         if (type.equals("m")) {
                             System.out.println("Enter motorcycle category:");
                             String category = scanner.next();
-                            Motorcycle vehicle = new Motorcycle(model, year, plate, brand,category,dailyfee, loggedUser.getId());
+                            Motorcycle vehicle = new Motorcycle(model, year, plate, brand,category,dailyfee, loggedUser.getId(), null);
                             system.addVehicle(vehicle);
                         } else if (type.equals("c")) {
-                            Car vehicle = new Car(model, year, plate, brand,dailyfee, loggedUser.getId());
+                            Car vehicle = new Car(model, year, plate, brand,dailyfee, loggedUser.getId(), null);
                             system.addVehicle(vehicle);
                         } else {
                             System.out.println("Invalid vehicle type");

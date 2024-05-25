@@ -12,8 +12,11 @@ public class Lender implements User {
     public float moneyBalance = 0;
     public Enum<ROLES> role = ROLES.USER;
     public List<Vehicle> ownedCars = new ArrayList<>();
-    public Lender(String name, String lastName, String username, String password) {
-        this.id = IDGenerator.generateID("L");
+    public Lender(String name, String lastName, String username, String password, String id) {
+        if(id == null)
+            this.id = IDGenerator.generateUserID("L");
+        else
+            this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.username = username;

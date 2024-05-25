@@ -17,12 +17,12 @@ public class TextHandler {
 
     public void displayMainMenu() {
         System.out.println("Login or if you don't have an account register and login");
-        System.out.println("1. Register");
-        System.out.println("2. Login");
+        System.out.println("[1] Register");
+        System.out.println("[2] Login");
     }
 
     public void registration(){
-        System.out.println("Choose your role:\n1. Lender\n2. Borrower");
+        System.out.println("Choose your role:\n[1] Lender\n[2] Borrower");
         int roleOption = scanner.nextInt();
         if(roleOption == 1) {
             System.out.println("Now you are registering as Lender.\n");
@@ -41,11 +41,11 @@ public class TextHandler {
 
         User newUser;
         if (roleOption == 1) {
-            newUser = new Lender(name, lastName, username, Authentication.hashPassword(password));
+            newUser = new Lender(name, lastName, username, Authentication.hashPassword(password), null);
             system.registerUser(newUser);
         }
         else if (roleOption == 2) {
-            newUser = new Borrower(name, lastName, username, Authentication.hashPassword(password));
+            newUser = new Borrower(name, lastName, username, Authentication.hashPassword(password),null);
             system.registerUser(newUser);
         }
     }
