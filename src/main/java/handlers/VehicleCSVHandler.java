@@ -1,4 +1,4 @@
-package com.example.app;
+package handlers;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,11 +7,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleCSVHandler {
-    public void saveVehiclesToCsv(Vehicle[] vehicles) {
+import com.example.app.model.Car;
+import com.example.app.model.Motorcycle;
+import com.example.app.model.Vehicle;
+
+public class VehicleCSVHandler implements VehicleHandler{
+    public static void saveVehicles(List<Vehicle> availableVehicles, String path) {
         try {
-            FileWriter writer = new FileWriter("src/resources/vehicles.csv");
-            for (Vehicle vehicle : vehicles) {
+            FileWriter writer = new FileWriter(path, false);
+            for (Vehicle vehicle : availableVehicles) {
                 writer.write(vehicle.toCSV());
             }
             writer.close();
@@ -20,9 +24,9 @@ public class VehicleCSVHandler {
         }
     }
 
-    public void saveVehicleToCsv(Vehicle vehicle) {
+    public static void saveVehicle(Vehicle vehicle, String path) {
         try {
-            FileWriter writer = new FileWriter("src/resources/vehicles.csv");
+            FileWriter writer = new FileWriter(path, true);
             writer.write(vehicle.toCSV());
             writer.close();
         } catch (IOException e) {
@@ -30,7 +34,7 @@ public class VehicleCSVHandler {
         }
     }
 
-    public static List<Vehicle> getVehiclesFromCSV(String path) {
+    public static List<Vehicle> getVehicles(String path) {
         List<Vehicle> vehicles = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
@@ -47,13 +51,12 @@ public class VehicleCSVHandler {
                     float dailyFee = Float.parseFloat(fields[7]);
                     String id = fields[8];
                     if(id.startsWith("C")){
-                        Car car = new Car(model, year, plate, brand, dailyFee, ownerId, id);
+                        Car car = new Car(brand, model, plate, id, year, dailyFee, ownerId);
                         car.renterId = renterId;
                         car.isRented = isRented;
                         vehicles.add(car);
                     } else if(id.startsWith("M")){
-                        // TODO add category handling for motorcycles
-                        Motorcycle motorcycle = new Motorcycle(model, year, plate, brand,dailyFee, ownerId, id);
+                        Motorcycle motorcycle = new Motorcycle(brand, model, plate, id, year, dailyFee, ownerId);
                         motorcycle.renterId = renterId;
                         motorcycle.isRented = isRented;
                         vehicles.add(motorcycle);

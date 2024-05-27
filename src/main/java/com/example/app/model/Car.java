@@ -1,8 +1,10 @@
-package com.example.app;
+package com.example.app.model;
+
+import com.example.app.IDGenerator;
 
 public class Car extends Vehicle {
 
-    public Car(String model, int year, String plate, String brand,float dailyFee,String ownerId, String id){
+    public Car(String brand, String model, String plate, String id, int year, float dailyFee, String ownerId){
         if(id == null)
             this.id = IDGenerator.generateVehicleID("C");
         else

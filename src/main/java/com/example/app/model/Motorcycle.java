@@ -1,9 +1,10 @@
-package com.example.app;
+package com.example.app.model;
+
+import com.example.app.IDGenerator;
 
 public class Motorcycle extends Vehicle {
-    private String category;
 
-    public Motorcycle(String model, int year, String plate, String brand,float dailyFee,String ownerId, String id) {
+    public Motorcycle(String brand, String model, String plate, String id, int year, float dailyFee, String ownerId) {
         if(id == null)
             this.id = IDGenerator.generateVehicleID("M");
         else
@@ -16,9 +17,5 @@ public class Motorcycle extends Vehicle {
         this.isRented = false;
         this.ownerId = ownerId;
         this.dailyFee = dailyFee;
-    }
-
-    public String getCategory() {
-        return category;
     }
 }

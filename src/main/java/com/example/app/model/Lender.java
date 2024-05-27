@@ -1,7 +1,9 @@
-package com.example.app;
+package com.example.app.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.app.IDGenerator;
 
 public class Lender implements User {
     private String id;
@@ -12,7 +14,7 @@ public class Lender implements User {
     public float moneyBalance = 0;
     public Enum<ROLES> role = ROLES.USER;
     public List<Vehicle> ownedCars = new ArrayList<>();
-    public Lender(String name, String lastName, String username, String password, String id) {
+    public Lender(String name, String lastName, String username, String password, String id, float moneyBalance) {
         if(id == null)
             this.id = IDGenerator.generateUserID("L");
         else
@@ -21,7 +23,9 @@ public class Lender implements User {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.moneyBalance = moneyBalance;
     }
+
     public String getUsername() {
         return username;
     }
@@ -60,12 +64,12 @@ public class Lender implements User {
         System.out.println("Comment added by Lender: " + comment);
     }
 
-    public void addVehicleToSystem(Vehicle vehicle) {
+    public void addVehicle(Vehicle vehicle) {
         ownedCars.add(vehicle);
-        System.out.println("Vehicle added to system: " + vehicle.getModel());
+        System.out.println("Vehicle added: " + vehicle.getModel());
     }
     public String toCSV() {
-        return id + "," + name + "," + lastName + "," + username + "," + password + "," + moneyBalance + "," + role;
+        return this.id + "," + this.name + "," + this.lastName + "," + this.username + "," + password + "," + moneyBalance + "," + role;
     }
 
     public boolean confirmRentRequest(Borrower loggedUser, Vehicle vehicle) {

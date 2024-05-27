@@ -1,4 +1,6 @@
-package com.example.app;
+package com.example.app.model;
+
+import com.example.app.IDGenerator;
 
 public class Borrower implements User {
     private String id;
@@ -8,9 +10,9 @@ public class Borrower implements User {
     public String password;
     public float moneyBalance;
     public Enum<ROLES> role = ROLES.USER;
-    public Vehicle rentedVehicle = null;
+    public String rentedVehicleID = null;
 
-    public Borrower(String name, String lastName, String username, String password, String id) {
+    public Borrower(String name, String lastName, String username, String password, String id, float moneyBalance) {
         if(id == null)
             this.id = IDGenerator.generateUserID("B");
         else
@@ -19,6 +21,7 @@ public class Borrower implements User {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.moneyBalance = moneyBalance;
     }
     //TODO: add rented vehicle to user
     public String getUsername() {
@@ -63,8 +66,7 @@ public class Borrower implements User {
         System.out.println("Comment added by Borrower: " + comment);
     }
 
-    //TODO add rented vehicle to user
     public String toCSV(){
-        return this.id + "," + this.name + "," + this.lastName + "," + this.username + "," + this.password + "," + this.moneyBalance + "," + this.role;
+        return this.id + "," + this.name + "," + this.lastName + "," + this.username + "," + this.password + "," + this.moneyBalance + "," + this.role + "," + this.rentedVehicleID;
     }
 }

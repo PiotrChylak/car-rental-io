@@ -1,12 +1,12 @@
-package com.example.app;
+package com.example.app.model;
 
 public abstract class Vehicle {
-    protected String model;
-    protected String brand;
-    protected int year;
-    protected boolean isRented;
-    protected String plate;
-    protected String id;
+    public String model;
+    public String brand;
+    public int year;
+    public boolean isRented;
+    public String plate;
+    public String id;
     public String ownerId;
     public String renterId;
     public float dailyFee;

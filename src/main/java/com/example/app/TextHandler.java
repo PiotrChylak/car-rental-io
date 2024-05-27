@@ -2,16 +2,18 @@ package com.example.app;
 
 import java.util.Scanner;
 
+import com.example.app.model.Borrower;
+import com.example.app.model.Lender;
+import com.example.app.model.User;
+
 public class TextHandler {
     private Scanner scanner;
     private RentalSystem system;
-    private Authentication auth;
     private User loggedUser;
 
-    public TextHandler(Scanner scanner, RentalSystem system, Authentication auth) {
+    public TextHandler(Scanner scanner, RentalSystem system) {
         this.scanner = scanner;
         this.system = system;
-        this.auth = auth;
         this.loggedUser = null;
     }
 
@@ -41,11 +43,11 @@ public class TextHandler {
 
         User newUser;
         if (roleOption == 1) {
-            newUser = new Lender(name, lastName, username, Authentication.hashPassword(password), null);
+            newUser = new Lender(name, lastName, username, Authentication.hashPassword(password), null,0);
             system.registerUser(newUser);
         }
         else if (roleOption == 2) {
-            newUser = new Borrower(name, lastName, username, Authentication.hashPassword(password),null);
+            newUser = new Borrower(name, lastName, username, Authentication.hashPassword(password),null,0);
             system.registerUser(newUser);
         }
     }
@@ -59,7 +61,7 @@ public class TextHandler {
         String username = scanner.next();
         System.out.println("Enter password:");
         String password = scanner.next();
-        loggedUser = auth.login(username, password, system.users);
+        loggedUser = Authentication.login(username, password, system.users);
         if (loggedUser != null) {
             return loggedUser;
         }

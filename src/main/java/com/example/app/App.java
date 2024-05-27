@@ -2,25 +2,32 @@ package com.example.app;
 
 import java.util.Scanner;
 
+import com.example.app.model.Borrower;
+import com.example.app.model.Car;
+import com.example.app.model.Lender;
+import com.example.app.model.Motorcycle;
+import com.example.app.model.User;
+import com.example.app.model.Vehicle;
+
+import handlers.VehicleCSVHandler;
+
 public class App {
     public static void main(String[] args) {
+        String vehiclePath = "src/resources/vehicles.csv";
         Scanner scanner = new Scanner(System.in);
         //Creating system components
         RentalSystem system = new RentalSystem();
-        Authentication auth = new Authentication(); // TODO: make Authentication singleton
         User loggedUser = null;
-        TextHandler textH = new TextHandler(scanner, system, auth);
-        VehicleCSVHandler csvHandler = new VehicleCSVHandler();
-        system.availableVehicles = VehicleCSVHandler.getVehiclesFromCSV("src/resources/vehicles.csv");
+        TextHandler textH = new TextHandler(scanner, system);
         while (true) {
-            //textH.displayMainMenu();
+            textH.displayMainMenu();
             int option = scanner.nextInt();
             if (option == 1) {
                 textH.registration();
             }
             else if (option == 2) {
             loggedUser = textH.login();
-            if (loggedUser != null) {
+            if (loggedUser != null) { 
                 System.out.println("Login successful");
                 break;
             } else {
@@ -82,12 +89,12 @@ public class App {
                         String brand = scanner.next();
                         if (type.equals("m")) {
                             System.out.println("Enter motorcycle category:");
-                            Motorcycle vehicle = new Motorcycle(model, year, plate, brand,dailyfee, loggedUser.getId(), null);
-                            csvHandler.saveVehicleToCsv(vehicle);
+                            Motorcycle vehicle = new Motorcycle(brand, model, plate, null, year, dailyfee, loggedUser.getId());
+                            VehicleCSVHandler.saveVehicle(vehicle, vehiclePath);
                             system.addVehicle(vehicle);
                         } else if (type.equals("c")) {
-                            Car vehicle = new Car(model, year, plate, brand,dailyfee, loggedUser.getId(), null);
-                            csvHandler.saveVehicleToCsv(vehicle);
+                            Car vehicle = new Car(brand, model, plate, null, year, dailyfee, loggedUser.getId());
+                            VehicleCSVHandler.saveVehicle(vehicle, vehiclePath);
                             system.addVehicle(vehicle);
                         } else {
                             System.out.println("Invalid vehicle type");
