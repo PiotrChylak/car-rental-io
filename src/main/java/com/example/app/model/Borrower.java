@@ -1,4 +1,6 @@
-package com.example.app;
+package com.example.app.model;
+
+import com.example.app.IDGenerator;
 
 public class Borrower implements User {
     private String id;
@@ -6,16 +8,20 @@ public class Borrower implements User {
     private String name;
     private String lastName;
     public String password;
-    public int moneyBalance = 0;
+    public float moneyBalance;
     public Enum<ROLES> role = ROLES.USER;
-    public Vehicle rentedVehicle = null;
+    public String rentedVehicleID = null;
 
-    public Borrower(String name, String lastName, String username, String password) {
-        this.id = IDGenerator.generateID("B");
+    public Borrower(String name, String lastName, String username, String password, String id, float moneyBalance) {
+        if(id == null)
+            this.id = IDGenerator.generateUserID("B");
+        else
+            this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.moneyBalance = moneyBalance;
     }
     //TODO: add rented vehicle to user
     public String getUsername() {
@@ -48,12 +54,19 @@ public class Borrower implements User {
         this.lastName = lastName;
     }
 
+    @Override
+    public float getBalance() {
+        return moneyBalance;
+    }
+    public void setBalance(float balance){
+        moneyBalance = balance;
+    }
+
     public void addComment(String comment) {
         System.out.println("Comment added by Borrower: " + comment);
     }
 
-    //TODO add rented vehicle to user
     public String toCSV(){
-        return this.id + "," + this.name + "," + this.lastName + "," + this.username + "," + this.password + "," + this.moneyBalance + "," + this.role;
+        return this.id + "," + this.name + "," + this.lastName + "," + this.username + "," + this.password + "," + this.moneyBalance + "," + this.role + "," + this.rentedVehicleID;
     }
 }

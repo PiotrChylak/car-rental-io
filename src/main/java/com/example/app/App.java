@@ -2,29 +2,32 @@ package com.example.app;
 
 import java.util.Scanner;
 
+import com.example.app.model.Borrower;
+import com.example.app.model.Car;
+import com.example.app.model.Lender;
+import com.example.app.model.Motorcycle;
+import com.example.app.model.User;
+import com.example.app.model.Vehicle;
+
+import handlers.VehicleCSVHandler;
+
 public class App {
     public static void main(String[] args) {
+        String vehiclePath = "src/resources/vehicles.csv";
         Scanner scanner = new Scanner(System.in);
         //Creating system components
         RentalSystem system = new RentalSystem();
-        Authentication auth = new Authentication(); // TODO: make Authentication singleton
         User loggedUser = null;
-        TextHandler textH = new TextHandler(scanner, system, auth);
-        Car car1 = new Car("Toyota", 2020,"LUB123","Corolla");
-        system.addVehicle(car1);
-        //Creating some users'
-        system.getUsersFromCSV("src/resources/user.csv");
-        //system.getVehiclesFromCSV("vehicles.csv")
+        TextHandler textH = new TextHandler(scanner, system);
         while (true) {
             textH.displayMainMenu();
             int option = scanner.nextInt();
             if (option == 1) {
                 textH.registration();
-                system.saveUsersToCSV("src/resources/user.csv");
             }
             else if (option == 2) {
             loggedUser = textH.login();
-            if (loggedUser != null) {
+            if (loggedUser != null) { 
                 System.out.println("Login successful");
                 break;
             } else {
@@ -55,7 +58,9 @@ public class App {
                     }
                     System.out.println("Choose a vehicle to rent:");
                     String plate = scanner.next();
-                    system.rentVehicle(plate,(Borrower) loggedUser);
+                    System.out.println("For how long would u like to borrow this vehicle: ");
+                    int duration = scanner.nextInt();
+                    system.rentVehicle(plate,(Borrower) loggedUser,duration);
                     break;
                 case 2:
                     if (loggedUser instanceof Borrower) {
@@ -74,6 +79,8 @@ public class App {
                         int year = scanner.nextInt();
                         System.out.println("Enter vehicle plate:");
                         plate = scanner.next();
+                        System.out.println("Enter daily fee:");
+                        int dailyfee = scanner.nextInt();
                         if (system.availableVehicles.stream().anyMatch(v -> v.plate.equals(plate))) {
                             System.out.println("Vehicle with plate " + plate + " already exists");
                             break;
@@ -82,11 +89,12 @@ public class App {
                         String brand = scanner.next();
                         if (type.equals("m")) {
                             System.out.println("Enter motorcycle category:");
-                            String category = scanner.next();
-                            Motorcycle vehicle = new Motorcycle(model, year, plate, brand,category);
+                            Motorcycle vehicle = new Motorcycle(brand, model, plate, null, year, dailyfee, loggedUser.getId());
+                            VehicleCSVHandler.saveVehicle(vehicle, vehiclePath);
                             system.addVehicle(vehicle);
                         } else if (type.equals("c")) {
-                            Car vehicle = new Car(model, year, plate, brand);
+                            Car vehicle = new Car(brand, model, plate, null, year, dailyfee, loggedUser.getId());
+                            VehicleCSVHandler.saveVehicle(vehicle, vehiclePath);
                             system.addVehicle(vehicle);
                         } else {
                             System.out.println("Invalid vehicle type");
